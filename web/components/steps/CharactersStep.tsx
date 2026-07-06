@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { updateParticipantStatus, updateSession, getSession, nextStep } from '@/lib/session'
+import { updateParticipantStatus, updateSession, getSession } from '@/lib/session'
+import { nextStep } from '@/lib/steps'
 import { Participant, Character } from '@/types/database'
 import StepWrapper from '@/components/StepWrapper'
 import LoadingDots from '@/components/LoadingDots'

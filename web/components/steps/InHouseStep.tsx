@@ -1,8 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { updateParticipantStatus, updateSession, getSession, nextStep } from '@/lib/session'
-import { supabase } from '@/lib/supabase'
+import { updateParticipantStatus, updateSession, getSession } from '@/lib/session'
+import { nextStep } from '@/lib/steps'
 import { Participant, LLMPassage } from '@/types/database'
 import StepWrapper from '@/components/StepWrapper'
 import LoadingDots from '@/components/LoadingDots'
@@ -43,14 +43,12 @@ export default function InHouseStep({ participant, onAdvance }: Props) {
   )
 
   useEffect(() => {
-    supabase
-      .from('window_sessions')
-      .select('window_name')
-      .eq('participant_id', participant.id)
-      .eq('status', 'complete')
-      .then(({ data }) => {
-        if (data) setCompletedWindows(data.map((d) => d.window_name))
+    fetch(`/api/window-sessions/completed?participantId=${participant.id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.windows) setCompletedWindows(data.windows)
       })
+      .catch((err) => console.error('Failed to load completed windows:', err))
   }, [participant.id])
 
   const enterWindow = async (windowName: string) => {
@@ -60,13 +58,15 @@ export default function InHouseStep({ participant, onAdvance }: Props) {
     setPassages([])
     setGenerating(true)
 
-    // Create window session record
-    await supabase.from('window_sessions').insert({
-      participant_id: participant.id,
-      window_name: windowName,
-      window_category: participant.condition,
-      order_in_session: completedWindows.length + 1,
-      status: 'in_progress',
+    await fetch('/api/window-sessions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        participantId: participant.id,
+        windowName,
+        windowCategory: participant.condition,
+        orderInSession: completedWindows.length + 1,
+      }),
     })
 
     // Generate all 3 sections
@@ -120,20 +120,15 @@ export default function InHouseStep({ participant, onAdvance }: Props) {
   const handleAcceptWindow = async () => {
     if (!currentWindow) return
 
-    // Save passages to window session
-    const { data: ws } = await supabase
-      .from('window_sessions')
-      .select('id')
-      .eq('participant_id', participant.id)
-      .eq('window_name', currentWindow)
-      .single()
-
-    if (ws) {
-      await supabase
-        .from('window_sessions')
-        .update({ status: 'complete', llm_passages: passages, completed_at: new Date().toISOString() })
-        .eq('id', ws.id)
-    }
+    await fetch('/api/window-sessions/complete', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        participantId: participant.id,
+        windowName: currentWindow,
+        passages,
+      }),
+    })
 
     const newCompleted = [...completedWindows, currentWindow]
     setCompletedWindows(newCompleted)

@@ -1,4 +1,6 @@
-import { supabase } from './supabase'
+'use server'
+
+import { db } from '../database/configureDatabase'
 import { Participant, ParticipantStatus, Session, WindowCategory } from '@/types/database'
 
 const WINDOWS = {
@@ -18,89 +20,133 @@ const WINDOWS = {
   ],
 }
 
+const SESSION_COLUMNS = new Set<string>([
+  'trouble',
+  'qualities',
+  'quality_description',
+  't1_narrative',
+  'plot_summary',
+  'characters',
+  'motivations',
+  'motivation_description',
+  't1_meaning_score',
+  'participant_name',
+  't2_narrative',
+  't2_meaning_score',
+])
+
 function pickRandom<T>(arr: T[], n: number): T[] {
   return [...arr].sort(() => Math.random() - 0.5).slice(0, n)
 }
 
-export async function getOrCreateParticipant(pid: string): Promise<Participant> {
-  const { data: existing } = await supabase
-    .from('participants')
-    .select('*')
-    .eq('pid', pid)
-    .single()
+// Parse JSON-text columns back into objects/arrays
+function hydrateParticipant(row: any): Participant {
+  return {
+    ...row,
+    assigned_windows: JSON.parse(row.assigned_windows),
+  } as Participant
+}
 
-  if (existing) return existing as Participant
+export async function getOrCreateParticipant(pid: string): Promise<Participant> {
+  const existing = db
+    .prepare(`SELECT * FROM participants WHERE pid = ?`)
+    .get(pid)
+
+  if (existing) {
+    return hydrateParticipant(existing)
+  }
 
   const condition: WindowCategory =
     Math.random() < 0.5 ? 'narrative-structures' : 'narrative-techniques'
+  const assignedWindows = pickRandom(WINDOWS[condition], 3)
 
-  const assigned_windows = pickRandom(WINDOWS[condition], 3)
+  const created = db
+    .prepare(
+      `INSERT INTO participants (pid, condition, assigned_windows, status)
+       VALUES (?, ?, ?, ?)
+       RETURNING *`
+    )
+    .get(pid, condition, JSON.stringify(assignedWindows), 'troubles')
 
-  const { data, error } = await supabase
-    .from('participants')
-    .insert({ pid, condition, assigned_windows, status: 'consent' })
-    .select()
-    .single()
+  if (!created) {
+    throw new Error('Failed to create participant')
+  }
 
-  if (error) throw error
-  return data as Participant
+  return hydrateParticipant(created)
 }
 
-export async function updateParticipantStatus(pid: string, status: ParticipantStatus) {
-  const { error } = await supabase
-    .from('participants')
-    .update({ status } as Partial<Participant>)
-    .eq('pid', pid)
-  if (error) throw error
+export async function updateParticipantStatus(
+  pid: string,
+  status: ParticipantStatus
+) {
+  const result = db
+    .prepare(`UPDATE participants SET status = ? WHERE pid = ?`)
+    .run(status, pid)
+
+  if (result.changes === 0) {
+    throw new Error(`Participant with pid ${pid} not found`)
+  }
 }
 
-export async function getSession(participantId: string): Promise<Session | null> {
-  const { data } = await supabase
-    .from('sessions')
-    .select('*')
-    .eq('participant_id', participantId)
-    .single()
-  return (data as Session | null)
+export async function getSession(
+  participantId: string
+): Promise<Session | null> {
+  const row = db
+    .prepare(`SELECT * FROM sessions WHERE participant_id = ?`)
+    .get(participantId)
+
+  return (row as Session) ?? null
 }
 
 export async function ensureSession(participantId: string): Promise<Session> {
   const existing = await getSession(participantId)
   if (existing) return existing
 
-  const { data, error } = await supabase
-    .from('sessions')
-    .insert({ participant_id: participantId })
-    .select()
-    .single()
+  const created = db
+    .prepare(`INSERT INTO sessions (participant_id) VALUES (?) RETURNING *`)
+    .get(participantId)
 
-  if (error) throw error
-  return data as Session
+  if (!created) {
+    throw new Error(`Failed to create session for participant ${participantId}`)
+  }
+  return created as Session
 }
 
-export async function updateSession(participantId: string, updates: Partial<Session>) {
-  const { error } = await supabase
-    .from('sessions')
-    .update(updates as Partial<Session>)
-    .eq('participant_id', participantId)
-  if (error) throw error
-}
-
-export const STEP_ORDER: ParticipantStatus[] = [
-  'consent',
-  'troubles',
+const JSON_COLUMNS = new Set([
+  'trouble',
   'qualities',
-  'quality_description',
-  'pre_narrative',
-  'characters',
   'motivations',
-  't1_meaning',
-  'in_house',
-  'post_narrative',
-  't2_meaning',
-  'complete',
-]
+  'characters',
+])
 
-export function nextStep(current: ParticipantStatus): ParticipantStatus {
-  const idx = STEP_ORDER.indexOf(current)
-  return STEP_ORDER[Math.min(idx + 1, STEP_ORDER.length - 1)]
+export async function updateSession(
+  participantId: string,
+  updates: Partial<Session>
+) {
+  const keys = Object.keys(updates)
+  if (keys.length === 0) return
+
+  for (const key of keys) {
+    if (!SESSION_COLUMNS.has(key)) {
+      throw new Error(`Disallowed session column: ${key}`)
+    }
+  }
+
+  const setClause = keys.map((key) => `${key} = ?`).join(', ')
+
+  // Serialize array/JSON columns; leave scalars as-is
+  const values = keys.map((key) =>
+    JSON_COLUMNS.has(key)
+      ? JSON.stringify((updates as any)[key])
+      : (updates as any)[key]
+  )
+
+  const result = db
+    .prepare(`UPDATE sessions SET ${setClause} WHERE participant_id = ?`)
+    .run(...values, participantId)
+
+  if (result.changes === 0) {
+    throw new Error(`Session for participant ${participantId} not found`)
+  }
 }
+

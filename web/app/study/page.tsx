@@ -5,7 +5,6 @@ import { useSearchParams } from 'next/navigation'
 import { getOrCreateParticipant, ensureSession } from '@/lib/session'
 import { Participant } from '@/types/database'
 
-import ConsentStep from '@/components/steps/ConsentStep'
 import TroublesStep from '@/components/steps/TroublesStep'
 import QualitiesStep from '@/components/steps/QualitiesStep'
 import QualityDescriptionStep from '@/components/steps/QualityDescriptionStep'
@@ -50,7 +49,6 @@ export default function StudyPage() {
   const props = { participant, pid, onAdvance: refresh }
 
   switch (participant.status) {
-    case 'consent':             return <ConsentStep {...props} />
     case 'troubles':            return <TroublesStep {...props} />
     case 'qualities':           return <QualitiesStep {...props} />
     case 'quality_description': return <QualityDescriptionStep {...props} />
