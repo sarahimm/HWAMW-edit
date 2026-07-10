@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { updateParticipantStatus, updateSession, getSession } from '@/lib/session'
 import { nextStep } from '@/lib/steps'
 import { Participant } from '@/types/database'
-import StepWrapper from '@/components/StepWrapper'
+import StepWrapper from '@/storyComponents/StepWrapper'
 import { useEffect } from 'react'
 
 interface Props {
@@ -20,7 +20,11 @@ export default function QualityDescriptionStep({ participant, onAdvance }: Props
 
   useEffect(() => {
     getSession(participant.id).then((s) => {
-      if (s?.qualities) setQualities(s.qualities)
+       let q = s?.qualities
+      if (typeof q === 'string') {
+        try { q = JSON.parse(q) } catch { q = [] }
+      }
+      if (Array.isArray(q)) setQualities(q)
     })
   }, [participant.id])
 

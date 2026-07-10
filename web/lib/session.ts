@@ -1,7 +1,7 @@
 'use server'
 
 import { db } from '../database/configureDatabase'
-import { Participant, ParticipantStatus, Session, WindowCategory } from '@/types/database'
+import { Participant, ParticipantStatus, Session } from '@/types/database'
 
 const WINDOWS = {
   'narrative-structures': [
@@ -56,17 +56,16 @@ export async function getOrCreateParticipant(pid: string): Promise<Participant> 
     return hydrateParticipant(existing)
   }
 
-  const condition: WindowCategory =
-    Math.random() < 0.5 ? 'narrative-structures' : 'narrative-techniques'
-  const assignedWindows = pickRandom(WINDOWS[condition], 3)
+
+  const assignedWindows = pickRandom(WINDOWS['narrative-structures'], 3)
 
   const created = db
     .prepare(
-      `INSERT INTO participants (pid, condition, assigned_windows, status)
-       VALUES (?, ?, ?, ?)
+      `INSERT INTO participants (pid, assigned_windows, status)
+       VALUES (?, ?, ?)
        RETURNING *`
     )
-    .get(pid, condition, JSON.stringify(assignedWindows), 'troubles')
+    .get(pid, JSON.stringify(assignedWindows), 'troubles')
 
   if (!created) {
     throw new Error('Failed to create participant')

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { ollamaChat } from '@/lib/ollama'
+import { getCompletions } from '@/lib/completions'
 import { getWindowConfig, buildSystemPrompt, buildSectionPrompt } from '@/lib/windows'
 import { Session, LLMPassage } from '@/types/database'
 
@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
         ? `${basePrompt}\n\nNote: the participant gave this feedback on the previous version: "${feedback}". Please take it into account.`
         : basePrompt
 
-    const content = await ollamaChat([
+    const content = await getCompletions([
       { role: 'system', content: systemPrompt },
       { role: 'user', content: userPrompt },
     ])

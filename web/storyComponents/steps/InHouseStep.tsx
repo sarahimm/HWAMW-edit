@@ -4,8 +4,8 @@ import { useState, useEffect } from 'react'
 import { updateParticipantStatus, updateSession, getSession } from '@/lib/session'
 import { nextStep } from '@/lib/steps'
 import { Participant, LLMPassage } from '@/types/database'
-import StepWrapper from '@/components/StepWrapper'
-import LoadingDots from '@/components/LoadingDots'
+import StepWrapper from '@/storyComponents/StepWrapper'
+import LoadingDots from '@/storyComponents/LoadingDots'
 
 interface Props {
   participant: Participant
@@ -43,7 +43,7 @@ export default function InHouseStep({ participant, onAdvance }: Props) {
   )
 
   useEffect(() => {
-    fetch(`/api/window-sessions/completed?participantId=${participant.id}`)
+    fetch(`/llmFuncs/window-sessions/completed?participantId=${participant.id}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.windows) setCompletedWindows(data.windows)
@@ -58,20 +58,19 @@ export default function InHouseStep({ participant, onAdvance }: Props) {
     setPassages([])
     setGenerating(true)
 
-    await fetch('/api/window-sessions', {
+    await fetch('/llmFuncs/window-sessions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         participantId: participant.id,
         windowName,
-        windowCategory: participant.condition,
         orderInSession: completedWindows.length + 1,
       }),
     })
 
     // Generate all 3 sections
     const session = await getSession(participant.id)
-    const res = await fetch('/api/generate-window', {
+    const res = await fetch('/llmFuncs/generate-window', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -96,7 +95,7 @@ export default function InHouseStep({ participant, onAdvance }: Props) {
     setShowFeedback(false)
 
     const session = await getSession(participant.id)
-    const res = await fetch('/api/regenerate-window', {
+    const res = await fetch('/llmFuncs/regenerate-window', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -120,7 +119,7 @@ export default function InHouseStep({ participant, onAdvance }: Props) {
   const handleAcceptWindow = async () => {
     if (!currentWindow) return
 
-    await fetch('/api/window-sessions/complete', {
+    await fetch('/llmFuncs/window-sessions/complete', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

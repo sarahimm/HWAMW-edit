@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { ollamaChat } from '@/lib/ollama'
+import { getCompletions } from '@/lib/completions'
 import { getWindowConfig, buildSystemPrompt, buildSectionPrompt } from '@/lib/windows'
 import { Session } from '@/types/database'
 
@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
 
   for (let i = 0; i < config.sectionStructure.length; i++) {
     const userPrompt = buildSectionPrompt(config, i, generatedSections)
-    const content = await ollamaChat([
+    const content = await getCompletions ([
       { role: 'system', content: systemPrompt },
       { role: 'user', content: userPrompt },
     ])

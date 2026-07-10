@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { getSession } from '@/lib/session'
 import { Participant } from '@/types/database'
-import StepWrapper from '@/components/StepWrapper'
+import StepWrapper from '@/storyComponents/StepWrapper'
 
 interface Props {
   participant: Participant

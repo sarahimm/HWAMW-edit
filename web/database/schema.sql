@@ -9,7 +9,6 @@ CREATE TABLE IF NOT EXISTS participants (
       substr(hex(randomblob(2)), 2) || '-' || hex(randomblob(6)))
   ),
   pid TEXT UNIQUE NOT NULL,
-  condition TEXT NOT NULL CHECK (condition IN ('narrative-structures', 'narrative-techniques')),
   assigned_windows TEXT NOT NULL,                    -- JSON array (was text[])
   status TEXT NOT NULL DEFAULT 'troubles' CHECK (status IN (
     'troubles', 'qualities', 'quality_description',
@@ -50,7 +49,6 @@ CREATE TABLE IF NOT EXISTS window_sessions (
   ),
   participant_id TEXT REFERENCES participants(id) ON DELETE CASCADE,
   window_name TEXT NOT NULL,
-  window_category TEXT NOT NULL,
   order_in_session INTEGER NOT NULL CHECK (order_in_session IN (1, 2, 3)),
   status TEXT NOT NULL DEFAULT 'not_started' CHECK (status IN ('not_started', 'in_progress', 'complete')),
   llm_passages TEXT DEFAULT '[]',                     -- JSON (was jsonb)
@@ -68,20 +66,6 @@ CREATE TABLE IF NOT EXISTS flavor_choices (
   participant_id TEXT REFERENCES participants(id) ON DELETE CASCADE,
   fork_id TEXT NOT NULL,
   choice TEXT NOT NULL,
-  created_at TEXT DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE IF NOT EXISTS questionnaire_responses (
-  id TEXT PRIMARY KEY DEFAULT (
-    lower(hex(randomblob(4)) || '-' || hex(randomblob(2)) || '-4' ||
-      substr(hex(randomblob(2)), 2) || '-' ||
-      substr('89ab', abs(random()) % 4 + 1, 1) ||
-      substr(hex(randomblob(2)), 2) || '-' || hex(randomblob(6)))
-  ),
-  participant_id TEXT REFERENCES participants(id) ON DELETE CASCADE,
-  questionnaire TEXT NOT NULL CHECK (questionnaire IN ('MEMS', 'MLQ', 'PTGI', 'NISE')),
-  timing TEXT NOT NULL CHECK (timing IN ('pre', 'post')),
-  responses TEXT NOT NULL DEFAULT '{}',               -- JSON (was jsonb)
   created_at TEXT DEFAULT CURRENT_TIMESTAMP
 );
 

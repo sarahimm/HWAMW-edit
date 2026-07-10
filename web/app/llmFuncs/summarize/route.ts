@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { ollamaChat } from '@/lib/ollama'
+import { getCompletions } from '@/lib/completions'
 
 export async function POST(req: NextRequest) {
   const { narrative } = await req.json()
 
-  const summary = await ollamaChat([
+  const summary = await getCompletions([
     {
       role: 'system',
       content: `You are the Gatekeeper — dry, precise, quietly perceptive. You stand at the gate of a grand house and collect stories from late-night travellers before letting them inside. A traveller has just told you their story. You are going to repeat it back to them to make sure you've understood it correctly.

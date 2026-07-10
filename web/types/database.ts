@@ -14,7 +14,6 @@ export type ParticipantStatus =
   | 't2_meaning'
   | 'complete'
 
-export type WindowCategory = 'narrative-structures' | 'narrative-techniques'
 
 export type Character = {
   name: string
@@ -30,7 +29,6 @@ export type LLMPassage = {
 export type Participant = {
   id: string
   pid: string
-  condition: WindowCategory
   assigned_windows: string[]
   status: ParticipantStatus
   created_at: string
@@ -51,16 +49,12 @@ export type Session = {
   participant_name: string | null
   t2_narrative: string | null
   t2_meaning_score: number | null
-  consent_given: boolean
-  consent_timestamp: string | null
-  consent_version: string
 }
 
 export type WindowSession = {
   id: string
   participant_id: string
   window_name: string
-  window_category: WindowCategory
   order_in_session: 1 | 2 | 3
   status: 'not_started' | 'in_progress' | 'complete'
   llm_passages: LLMPassage[]
@@ -92,7 +86,6 @@ export interface Database {
         Row: Participant
         Insert: {
           pid: string
-          condition: WindowCategory
           assigned_windows: string[]
           status?: ParticipantStatus
         }
@@ -115,9 +108,6 @@ export interface Database {
           participant_name?: string | null
           t2_narrative?: string | null
           t2_meaning_score?: number | null
-          consent_given?: boolean
-          consent_timestamp?: string | null
-          consent_version?: string
         }
         Update: Partial<Session>
         Relationships: []
@@ -127,7 +117,6 @@ export interface Database {
         Insert: {
           participant_id: string
           window_name: string
-          window_category: WindowCategory
           order_in_session: number
           status?: 'not_started' | 'in_progress' | 'complete'
           llm_passages?: LLMPassage[]

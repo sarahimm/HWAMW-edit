@@ -175,10 +175,19 @@ export function getWindowConfig(windowName: string): WindowConfig | null {
 }
 
 export function buildSystemPrompt(config: WindowConfig, session: Session): string {
-  const characterList = (session.characters ?? [])
+  let characters = session.characters
+  if (typeof characters === 'string') {
+    try {
+      characters = JSON.parse(characters)
+    } catch {
+      characters = []
+    }
+  }
+  if (!Array.isArray(characters)) characters = []
+
+  const characterList = characters
     .map((c) => `${c.name}: ${c.description}`)
     .join('\n')
-
   const motivations = [
     ...(session.motivations ?? []),
     session.motivation_description,

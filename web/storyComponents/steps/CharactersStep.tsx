@@ -4,8 +4,8 @@ import { useState, useEffect, useRef } from 'react'
 import { updateParticipantStatus, updateSession, getSession } from '@/lib/session'
 import { nextStep } from '@/lib/steps'
 import { Participant, Character } from '@/types/database'
-import StepWrapper from '@/components/StepWrapper'
-import LoadingDots from '@/components/LoadingDots'
+import StepWrapper from '@/storyComponents/StepWrapper'
+import LoadingDots from '@/storyComponents/LoadingDots'
 
 interface Props {
   participant: Participant
@@ -39,7 +39,7 @@ export default function CharactersStep({ participant, onAdvance }: Props) {
         return
       }
       try {
-        const res = await fetch('/api/summarize', {
+        const res = await fetch('/llmFuncs/summarize', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ narrative: session.t1_narrative }),

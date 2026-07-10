@@ -8,9 +8,9 @@ export async function POST(req: Request) {
 
     db.prepare(
       `INSERT INTO window_sessions
-         (participant_id, window_name, window_category, order_in_session, status)
-       VALUES (?, ?, ?, ?, ?)`
-    ).run(participantId, windowName, windowCategory, orderInSession, 'in_progress')
+         (participant_id, window_name, order_in_session, status)
+       VALUES (?, ?, ?, ?)`
+    ).run(participantId, windowName, orderInSession, 'in_progress')
 
     return NextResponse.json({ ok: true })
   } catch (err) {
