@@ -5,7 +5,7 @@ The House with a Million Windows - restorying interface
 ## Task list:
 - ~~Switch database to SQLite~~
   - ~~Update all database calls to match!~~
-- Switch over to Edina language model
+- ~~Switch over to ELM api~~
 - Alter window format
   - database structure
   - actual window text
