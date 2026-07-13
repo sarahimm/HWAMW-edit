@@ -36,6 +36,7 @@ CREATE TABLE IF NOT EXISTS sessions (
   motivation_description TEXT,
   t1_meaning_score INTEGER CHECK (t1_meaning_score BETWEEN 1 AND 7),
   participant_name TEXT,
+  participant_pronouns TEXT,
   t2_narrative TEXT,
   t2_meaning_score INTEGER CHECK (t2_meaning_score BETWEEN 1 AND 7)
 );
@@ -48,7 +49,7 @@ CREATE TABLE IF NOT EXISTS window_sessions (
       substr(hex(randomblob(2)), 2) || '-' || hex(randomblob(6)))
   ),
   participant_id TEXT REFERENCES participants(id) ON DELETE CASCADE,
-  window_name TEXT NOT NULL,
+  window_id TEXT REFERENCES windows(id),
   order_in_session INTEGER NOT NULL CHECK (order_in_session IN (1, 2, 3)),
   status TEXT NOT NULL DEFAULT 'not_started' CHECK (status IN ('not_started', 'in_progress', 'complete')),
   llm_passages TEXT DEFAULT '[]',                     -- JSON (was jsonb)
@@ -67,6 +68,20 @@ CREATE TABLE IF NOT EXISTS flavor_choices (
   fork_id TEXT NOT NULL,
   choice TEXT NOT NULL,
   created_at TEXT DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS windows (
+  id TEXT PRIMARY KEY DEFAULT (
+    lower(hex(randomblob(4)) || '-' || hex(randomblob(2)) || '-4' ||
+      substr(hex(randomblob(2)), 2) || '-' ||
+      substr('89ab', abs(random()) % 4 + 1, 1) ||
+      substr(hex(randomblob(2)), 2) || '-' || hex(randomblob(6)))
+  ),
+  description TEXT NOT NULL,
+  writer TEXT NOT NULL,
+  work TEXT NOT NULL,
+  styleInterventions TEXT DEFAULT '[]',
+  structureInterventions TEXT DEFAULT '[]'
 );
 
 -- Indexes for common lookups (SQLite requires index names)

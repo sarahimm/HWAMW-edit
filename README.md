@@ -7,16 +7,22 @@ The House with a Million Windows - restorying interface
   - ~~Update all database calls to match!~~
 - ~~Switch over to ELM api~~
 - Alter window format
-  - database structure
-  - actual window text
-    - load from json, rather than hard-coded
-  - update dependent .ts files
+  - ~~database structure~~
+  - ~~database initialization script~~
+  - ~~add json files for quick initialization on db reset~~
+  - ~~update dependent .ts files to use database windows~~
+  - change window assignment to random batches of 3 per choice
+- ~~Update participant/session columns~~
+  - ~~in schema~~
+  - ~~in code~~
 - Update window generation
-  - implement system prompt template
-  - adjust generation length; pauses for feedback
+  - ~~implement system prompt template~~
+  - ~~adjust generation length;~~
+  - implement feedback / corrections
+  - add an info button, pane, or hover revealing which writer/work is the basis for that window
 - Interactivity
   - Expand MC options
-  - Show 'window' text when rewriting story
+  - Show scrollable 'window' text when rewriting story
 - Narrative
   - write intro
   - edit text throughout

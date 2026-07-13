@@ -37,6 +37,7 @@ export type Participant = {
 export type Session = {
   id: string
   participant_id: string
+  participant_pronouns: string
   trouble: string[]
   qualities: string[]
   quality_description: string | null
@@ -61,6 +62,17 @@ export type WindowSession = {
   created_at: string
   completed_at: string | null
 }
+
+// Shape of the raw row as stored in SQLite (interventions are JSON strings).
+export type WindowRow = {
+  id: string
+  description: string
+  writer: string
+  work: string
+  styleInterventions: string
+  structureInterventions: string
+}
+
 
 export type FlavorChoice = {
   id: string
@@ -96,6 +108,7 @@ export interface Database {
         Row: Session
         Insert: {
           participant_id: string
+          participant_pronouns: string
           trouble?: string[]
           qualities?: string[]
           quality_description?: string | null

@@ -1,0 +1,80 @@
+[
+  {
+    "description": "The simple, unvarnished pine frame. It smells of cat hair, peat, and cigarettes.",
+    "writer": "Ernest Hemingway",
+    "work": "Hills Like White Elephants",
+    "styleInterventions": [
+      "Use short sentences.",
+      "Speak plainly.",
+      "Use lots of dialogue.",
+      "Don't use dialogue tags (like \"he said\") to show who's speaking, just line breaks between speakers."
+    ],
+    "structureInterventions": [
+      "Reveal the tension subtly and only indirectly through a dialogue between two major characters.",
+      "A physical journey symbolizes the protagonist's difficult decision.",
+      "The protagonist's mind should be made up by the story's end, but the story only implies what that decision is indirectly."
+    ]
+  },
+  {
+    "description": "A comfortable frame weathered slightly by sea air. A woman's green cashmere shawl is draped over its corners, but you can see light shimmering on the glass beyond.",
+    "writer": "Virginia Woolf",
+    "work": "To the Lighthouse",
+    "styleInterventions": [
+      "Use long, cumulative sentences that move between topics.",
+      "Writing should feel like stream-of-consciousness but reemphasize a careful and consistent set of images and themes.",
+      "Include long, beautiful descriptions of small details and moments that seem unobtrusive but are important to the story's themes."
+    ],
+    "structureInterventions": [
+      "Structure the story around a promise or expectation that's fulfilled, but not in the way you'd expect.",
+      "Rely heavily on natural and seasonal imagery, attention to places, homes, and furniture, and other non-human details and perspectives.",
+      "Explore the tension between different characters' perspectives, especially about the social norms of their situation."
+    ]
+  },
+  {
+    "description": "The slender frame of burnished mahogany, gleaming bloodred in the candlelight and seeming to cast a shadow longer than it ought?",
+    "writer": "Edgar Allen Poe",
+    "work": "The Tell-Tale Heart",
+    "styleInterventions": [
+      "Use a strong first-person narrative voice, with lots of interiority.",
+      "Use poetic, formal, and even archaic language.",
+      "The tone should be dark, dwelling on Gothic imagery and themes.",
+      "The narration should be unreliable, feeling logical, justified, and clinical on the surface but spiraling or growing more emotional or even deceptive throughout the piece."
+    ],
+    "structureInterventions": [
+      "The protagonist, looking back, narrates their story in retrospect, explaining or justifying their decisions.",
+      "A strong fixation--whether a sound, person, image, or idea--motivates the protagonist and underscores the main conflict.",
+      "Build tension up to a dramatic climax, where a decisive action or exclamation concludes the tale."
+    ]
+  },
+  {
+    "description": "A tall, sashed window richly draped with curtains. You can hear coy laughter and the faint notes of a quadrille coming through the glass.",
+    "writer": "Jane Austen",
+    "work": "Pride and Prejudice",
+    "styleInterventions": [
+      "Use witty, elevated diction with Regency flavor.",
+      "Write in third person, but use free indirect discourse to flavor the narration with characters' tones and opinions.",
+      "Utilize frequent verbal irony to tastefully critique other characters, situations, and wider society."
+    ],
+    "structureInterventions": [
+      "The protagonist begins in an unfortunate or underprivileged situation that gets much worse throughout the story before being resolved.",
+      "Most of the plot progresses through dialogue and changing social or familial situations.",
+      "Many of the protagonist's problems are the result of misunderstandings or quick judgments; questioning their own assumptions brings growth and resolution."
+    ]
+  },
+  {
+    "description": "A weary frame set with sagging hinges, giving off a soulful air. Cigarette smoke and faint hints of jazz music seep through the edges.",
+    "writer": "Langston Hughes",
+    "work": "Salvation",
+    "styleInterventions": [
+      "Keep a conversational tone.",
+      "Use lots of verbal irony.",
+      "Incorporate the voices of minor characters, using strong and distinct personas which reflect their social role and background.",
+      "Write in first person, past tense, but use quick-moving, in-the-moment description."
+    ],
+    "structureInterventions": [
+      "Emphasize social and cultural commentary.",
+      "The plot should be linear but include lots of references to things others said or did previously.",
+      "The narrator should directly show the reader the internal conflicts that other characters can't see."
+    ]
+  }
+]

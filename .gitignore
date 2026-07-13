@@ -4,3 +4,4 @@ node_modules/
 study.db
 study.db-shm
 study.db-wal
+.vscode

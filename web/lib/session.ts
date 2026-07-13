@@ -3,22 +3,8 @@
 import { db } from '../database/configureDatabase'
 import { Participant, ParticipantStatus, Session } from '@/types/database'
 
-const WINDOWS = {
-  'narrative-structures': [
-    'heros-journey',
-    'redemption-arc',
-    'conversations-with-god',
-    'bildungsroman',
-    'epiphany',
-  ],
-  'narrative-techniques': [
-    'focalization',
-    'zoom',
-    'objects-as-metaphors',
-    'nonlinear-narrative',
-    'sensory-detail',
-  ],
-}
+const rows: any[] = db.prepare('SELECT id FROM windows').all();
+const windowIds: string[] = rows.map(row => row.id);
 
 const SESSION_COLUMNS = new Set<string>([
   'trouble',
@@ -31,6 +17,7 @@ const SESSION_COLUMNS = new Set<string>([
   'motivation_description',
   't1_meaning_score',
   'participant_name',
+  'participant_pronouns',
   't2_narrative',
   't2_meaning_score',
 ])
@@ -57,7 +44,7 @@ export async function getOrCreateParticipant(pid: string): Promise<Participant> 
   }
 
 
-  const assignedWindows = pickRandom(WINDOWS['narrative-structures'], 3)
+  const assignedWindows = pickRandom(windowIds, 3)
 
   const created = db
     .prepare(

@@ -15,11 +15,19 @@ interface Props {
 
 const POSITIONS = [1, 2, 3, 4, 5, 6, 7]
 
+// 🔹 ADDED: preset pronoun options
+const PRONOUN_OPTIONS = ['she/her', 'he/him', 'they/them', 'other'] as const
+
 export default function MeaningStep({ participant, timing, onAdvance }: Props) {
   const [score, setScore] = useState<number | null>(null)
   const [name, setName] = useState('')
   const [existingName, setExistingName] = useState('')
   const [submitting, setSubmitting] = useState(false)
+  const [pronounChoice, setPronounChoice] = useState<string>('')
+  const [pronounOther, setPronounOther] = useState('')
+
+  const pronouns =
+    pronounChoice === 'other' ? pronounOther.trim() : pronounChoice
 
   useEffect(() => {
     if (timing === 't2') {
@@ -31,11 +39,11 @@ export default function MeaningStep({ participant, timing, onAdvance }: Props) {
 
   const handleSubmit = async () => {
     if (score === null) return
-    if (timing === 't1' && !name.trim()) return
+    if (timing === 't1' && (!name.trim() || !pronouns)) return
     setSubmitting(true)
 
     const updates: Record<string, unknown> = timing === 't1'
-      ? { t1_meaning_score: score, participant_name: name }
+      ? { t1_meaning_score: score, participant_name: name, participant_pronouns: pronouns }
       : { t2_meaning_score: score }
 
     await updateSession(participant.id, updates)
@@ -100,6 +108,36 @@ export default function MeaningStep({ participant, timing, onAdvance }: Props) {
             placeholder="What would you like to be called?"
             className="w-full bg-stone-900 border border-stone-700 rounded px-4 py-3 text-stone-200 text-sm placeholder-stone-600 focus:outline-none focus:border-stone-500"
           />
+
+          <p className="text-stone-400 text-sm pt-2">
+            &ldquo;And how should I refer to you?&rdquo;
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {PRONOUN_OPTIONS.map((option) => (
+              <button
+                key={option}
+                type="button"
+                onClick={() => setPronounChoice(option)}
+                className={`px-3 py-2 text-sm rounded border transition-colors ${
+                  pronounChoice === option
+                    ? 'bg-stone-300 border-stone-300 text-stone-900'
+                    : 'bg-transparent border-stone-700 text-stone-300 hover:border-stone-500'
+                }`}
+              >
+                {option}
+              </button>
+            ))}
+          </div>
+
+          {pronounChoice === 'other' && (
+            <input
+              type="text"
+              value={pronounOther}
+              onChange={(e) => setPronounOther(e.target.value)}
+              placeholder="Enter your pronouns"
+              className="w-full bg-stone-900 border border-stone-700 rounded px-4 py-3 text-stone-200 text-sm placeholder-stone-600 focus:outline-none focus:border-stone-500"
+            />
+          )}
         </div>
       )}
 
@@ -111,7 +149,7 @@ export default function MeaningStep({ participant, timing, onAdvance }: Props) {
 
       <button
         onClick={handleSubmit}
-        disabled={score === null || (timing === 't1' && !name.trim()) || submitting}
+        disabled={score === null || (timing === 't1' && (!name.trim() || !pronouns)) || submitting}
         className="w-full py-3 text-sm font-medium rounded border border-stone-700 text-stone-300 hover:bg-stone-800 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
       >
         {submitting ? '...' : timing === 't1' ? 'Step inside' : 'Update the engraving'}

@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
   const passages = []
   const generatedSections: string[] = []
 
-  for (let i = 0; i < config.sectionStructure.length; i++) {
+  for (let i = 0; i < 3; i++) {
     const userPrompt = buildSectionPrompt(config, i, generatedSections)
     const content = await getCompletions ([
       { role: 'system', content: systemPrompt },

@@ -18,6 +18,7 @@ bun dev
 * Do this only once *
 ```bash
 npx tsx --env-file=.env.local scripts/init-db.ts
+npx tsx --env-file=.env.local scripts/addWindows.ts ../windows/windowsV1.json ../study.db
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.

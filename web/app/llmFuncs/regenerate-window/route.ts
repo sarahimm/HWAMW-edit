@@ -5,27 +5,27 @@ import { Session, LLMPassage } from '@/types/database'
 
 export async function POST(req: NextRequest) {
   const {
-    windowName,
+    windowId,
     session,
     passages: previousPassages,
     feedback,
     fromSection,
   }: {
-    windowName: string
+    windowId: string
     session: Session
     passages: LLMPassage[]
     feedback: string
     fromSection: number
   } = await req.json()
 
-  const config = getWindowConfig(windowName)
+  const config = getWindowConfig(windowId)
   if (!config) return NextResponse.json({ error: 'Unknown window' }, { status: 400 })
 
   const systemPrompt = buildSystemPrompt(config, session)
   const lockedSections = previousPassages.map((p) => p.content)
   const newPassages: LLMPassage[] = []
 
-  for (let i = fromSection; i < config.sectionStructure.length; i++) {
+  for (let i = fromSection; i < 3; i++) {
     const allPrior = [...lockedSections, ...newPassages.map((p) => p.content)]
     const basePrompt = buildSectionPrompt(config, i, allPrior)
     const userPrompt =
