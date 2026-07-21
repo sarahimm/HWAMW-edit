@@ -4,9 +4,9 @@ import { getWindowConfig, buildSystemPrompt, buildSectionPrompt } from '@/lib/wi
 import { Session } from '@/types/database'
 
 export async function POST(req: NextRequest) {
-  const { windowName, session }: { windowName: string; session: Session } = await req.json()
+  const { windowId, session }: { windowId: string; session: Session } = await req.json()
 
-  const config = getWindowConfig(windowName)
+  const config = getWindowConfig(windowId)
   if (!config) return NextResponse.json({ error: 'Unknown window' }, { status: 400 })
 
   const systemPrompt = buildSystemPrompt(config, session)

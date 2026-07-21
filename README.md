@@ -20,6 +20,8 @@ The House with a Million Windows - restorying interface
   - ~~adjust generation length;~~
   - implement feedback / corrections
   - add an info button, pane, or hover revealing which writer/work is the basis for that window
+  - adjust window prompts for chosen model (e.g. Hemingway, where model over-applies short paragraph constraint)
+- ~~Fix window ID appearing in place of description~~
 - Interactivity
   - Expand MC options
   - Show scrollable 'window' text when rewriting story

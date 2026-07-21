@@ -12,7 +12,7 @@ export async function GET(req: Request) {
   try {
     const rows = db
       .prepare(
-        `SELECT window_name FROM window_sessions
+        `SELECT window_id FROM window_sessions
          WHERE participant_id = ? AND status = ?`
       )
       .all(participantId, 'complete') as { window_name: string }[]

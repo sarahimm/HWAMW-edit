@@ -11,7 +11,7 @@ export async function POST(req: Request) {
          SET status = ?, llm_passages = ?, completed_at = ?
          WHERE id = (
            SELECT id FROM window_sessions
-           WHERE participant_id = ? AND window_name = ?
+           WHERE participant_id = ? AND window_id = ?
            LIMIT 1
          )`
       )

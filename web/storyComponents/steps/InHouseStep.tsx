@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { updateParticipantStatus, updateSession, getSession } from '@/lib/session'
 import { nextStep } from '@/lib/steps'
+import {WindowConfig} from '@/lib/windows'
 import { Participant, LLMPassage } from '@/types/database'
 import StepWrapper from '@/storyComponents/StepWrapper'
 import LoadingDots from '@/storyComponents/LoadingDots'
@@ -11,19 +12,6 @@ interface Props {
   participant: Participant
   pid: string
   onAdvance: () => void
-}
-
-const WINDOW_LABELS: Record<string, { title: string; description: string }> = {
-  'heros-journey':         { title: 'The Burnished Frame', description: 'A slender frame of burnished mahogany, gleaming bloodred in the candlelight, casting a shadow longer than it ought.' },
-  'redemption-arc':        { title: 'The Tarnished Frame', description: 'A heavy frame, once gilded, its gold worn away at the edges to reveal something darker beneath.' },
-  'conversations-with-god':{ title: 'The Stone Frame', description: 'A frame cut directly from the wall—no wood, no metal. Just the stone itself, ancient and indifferent.' },
-  'bildungsroman':         { title: 'The Pine Frame', description: 'A simple, unvarnished pine frame. It smells of cat hair, peat, and cigarettes.' },
-  'epiphany':              { title: 'The Silver Frame', description: 'A narrow silver frame, almost too bright to look at directly, like light off still water.' },
-  'focalization':          { title: 'The Golden Frame', description: 'A dignified golden frame, clearly transatlantic in origin, with three small mirrors set into the corners.' },
-  'zoom':                  { title: 'The Clock Frame', description: 'A frame made from the face of a clock, its hands removed, the numerals still faintly visible.' },
-  'objects-as-metaphors':  { title: 'The Cluttered Frame', description: 'A frame hung with small objects—a key, a button, a coin—each one seemingly placed with care.' },
-  'nonlinear-narrative':   { title: 'The Splintered Frame', description: 'A frame that appears to have been broken and reassembled, the pieces not quite in their original order.' },
-  'sensory-detail':        { title: 'The Weathered Frame', description: 'A frame worn by weather and handling, its surface rough to the touch, smelling faintly of rain.' },
 }
 
 type WindowPhase = 'choosing' | 'reading' | 'done'
@@ -42,6 +30,23 @@ export default function InHouseStep({ participant, onAdvance }: Props) {
     (w) => !completedWindows.includes(w)
   )
 
+  const [windowConfigs, setWindowConfigs] = useState<Record<string, WindowConfig>>({});
+
+  useEffect(() => {
+    const fetchWindowConfigs = async () => {
+      const response = await fetch('/llmFuncs/window-config', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({windowIds: remainingWindows}),
+      });
+      const data = await response.json();
+      setWindowConfigs(data);
+    };
+    fetchWindowConfigs();
+  }, []);
+
   useEffect(() => {
     fetch(`/llmFuncs/window-sessions/completed?participantId=${participant.id}`)
       .then((res) => res.json())
@@ -51,8 +56,8 @@ export default function InHouseStep({ participant, onAdvance }: Props) {
       .catch((err) => console.error('Failed to load completed windows:', err))
   }, [participant.id])
 
-  const enterWindow = async (windowName: string) => {
-    setCurrentWindow(windowName)
+  const enterWindow = async (windowId: string) => {
+    setCurrentWindow(windowId)
     setPhase('reading')
     setCurrentSection(0)
     setPassages([])
@@ -63,7 +68,7 @@ export default function InHouseStep({ participant, onAdvance }: Props) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         participantId: participant.id,
-        windowName,
+        windowId,
         orderInSession: completedWindows.length + 1,
       }),
     })
@@ -74,7 +79,7 @@ export default function InHouseStep({ participant, onAdvance }: Props) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        windowName,
+        windowId,
         session,
       }),
     })
@@ -99,7 +104,7 @@ export default function InHouseStep({ participant, onAdvance }: Props) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        windowName: currentWindow,
+        windowId: currentWindow,
         session,
         passages: passages.slice(0, currentSection),
         feedback,
@@ -124,7 +129,7 @@ export default function InHouseStep({ participant, onAdvance }: Props) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         participantId: participant.id,
-        windowName: currentWindow,
+        windowId: currentWindow,
         passages,
       }),
     })
@@ -153,15 +158,19 @@ export default function InHouseStep({ participant, onAdvance }: Props) {
 
         <div className="space-y-3">
           {remainingWindows.map((w) => {
-            const label = WINDOW_LABELS[w] ?? { title: w, description: '' }
+            const window = windowConfigs[w];
+            let desc = "";
+            if (window) {
+              desc = window.description;
+            }
             return (
               <button
                 key={w}
                 onClick={() => enterWindow(w)}
                 className="w-full text-left px-4 py-4 rounded border border-stone-800 hover:border-stone-600 transition-colors group"
               >
-                <p className="text-stone-200 text-sm font-medium group-hover:text-stone-100">{label.title}</p>
-                <p className="text-stone-500 text-xs mt-1 leading-relaxed">{label.description}</p>
+                
+                <p className="text-stone-500 text-xs mt-1 leading-relaxed">{desc}</p>
               </button>
             )
           })}
@@ -189,7 +198,7 @@ export default function InHouseStep({ participant, onAdvance }: Props) {
       ) : currentPassage ? (
         <>
           <p className="text-stone-600 text-xs uppercase tracking-widest">
-            {WINDOW_LABELS[currentWindow ?? '']?.title ?? currentWindow} — {currentSection + 1} of 3
+            Through the window — {currentSection + 1} of 3
           </p>
 
           <div className="prose prose-sm prose-invert max-w-none">
