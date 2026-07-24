@@ -10,8 +10,8 @@ CREATE TABLE IF NOT EXISTS participants (
   ),
   pid TEXT UNIQUE NOT NULL,
   assigned_windows TEXT NOT NULL,                    -- JSON array (was text[])
-  status TEXT NOT NULL DEFAULT 'troubles' CHECK (status IN (
-    'troubles', 'qualities', 'quality_description',
+  status TEXT NOT NULL DEFAULT 'first_step' CHECK (status IN (
+    'first_step','troubles', 'qualities', 'quality_description',
     'pre_narrative', 'characters', 'motivations', 't1_meaning',
     'in_house', 'post_narrative', 't2_meaning', 'complete'
   )),

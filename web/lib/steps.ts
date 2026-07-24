@@ -2,6 +2,7 @@
 import { ParticipantStatus } from '@/types/database'
 
 export const STEP_ORDER: ParticipantStatus[] = [
+  'first_step',
   'troubles',
   'qualities',
   'quality_description',

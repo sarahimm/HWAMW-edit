@@ -46,19 +46,19 @@ export default function TroublesStep({ participant, onAdvance }: Props) {
   return (
     <StepWrapper>
       <p className="text-stone-200 text-sm leading-relaxed">
-        You&apos;re out walking late tonight. Much later than you usually stay up.
-        It&apos;s been a long day. For that matter, a long year.
+        You're out walking late tonight. Much later than you usually stay up.
+        It's been a long day. For that matter, a long year.
       </p>
       <p className="text-stone-200 text-sm leading-relaxed">
-        The feeling—it&apos;s tiredness, but not the kind that stillness can solve.
-        Something inside of you feels stuck. You&apos;re exhausted, but you keep
+        The feeling—it's tiredness, but not the kind that stillness can solve.
+        Something inside of you feels stuck. You're exhausted, but you keep
         walking, like your feet moving on might make your thoughts follow after.
       </p>
 
       <div className="w-full h-px bg-stone-800" />
 
       <p className="text-stone-400 text-sm leading-relaxed">
-        Your mind is restless. Like a dog that can&apos;t seem to make itself
+        Your mind is restless. Like a dog that can't seem to make itself
         comfortable in one spot, constantly unfurling and repositioning. You list
         the woes swirling around in your mind:
       </p>

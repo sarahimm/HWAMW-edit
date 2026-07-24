@@ -1,7 +1,7 @@
 export type Json = string | number | boolean | null | { [key: string]: Json } | Json[]
 
 export type ParticipantStatus =
-  | 'consent'
+  | 'first_step'
   | 'troubles'
   | 'qualities'
   | 'quality_description'

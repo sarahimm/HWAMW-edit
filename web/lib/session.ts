@@ -7,6 +7,7 @@ const rows: any[] = db.prepare('SELECT id FROM windows').all();
 const windowIds: string[] = rows.map(row => row.id);
 
 const SESSION_COLUMNS = new Set<string>([
+  'first_step',
   'trouble',
   'qualities',
   'quality_description',
@@ -52,7 +53,7 @@ export async function getOrCreateParticipant(pid: string): Promise<Participant> 
        VALUES (?, ?, ?)
        RETURNING *`
     )
-    .get(pid, JSON.stringify(assignedWindows), 'troubles')
+    .get(pid, JSON.stringify(assignedWindows), 'first_step')
 
   if (!created) {
     throw new Error('Failed to create participant')

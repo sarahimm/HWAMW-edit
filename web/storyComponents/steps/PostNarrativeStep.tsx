@@ -12,10 +12,12 @@ interface Props {
   onAdvance: () => void
 }
 
+
 export default function PostNarrativeStep({ participant, onAdvance }: Props) {
   const [narrative, setNarrative] = useState('')
   const [submitting, setSubmitting] = useState(false)
-
+  const [isRecallOpen, setIsRecallOpen] = useState(false); 
+  const [recallIndex, setRecallIndex] = useState(0);
   const wordCount = narrative.trim().split(/\s+/).filter(Boolean).length
 
   const handleSubmit = async () => {
@@ -25,6 +27,9 @@ export default function PostNarrativeStep({ participant, onAdvance }: Props) {
     await updateParticipantStatus(participant.pid, nextStep('post_narrative'))
     onAdvance()
   }
+  
+  const passages: string[] = ["","",""];
+
 
   return (
     <StepWrapper>
@@ -47,6 +52,26 @@ export default function PostNarrativeStep({ participant, onAdvance }: Props) {
         through the windows, but the words are entirely yours.
       </p>
 
+      <button
+        onClick={() => setIsRecallOpen(true)}
+        className="flex items-center gap-2 px-3 py-2 text-xs rounded border border-stone-800 text-stone-500 hover:border-stone-700 hover:text-stone-400 transition-colors self-start"
+      >
+        {/* Column/panel icon */}
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 14 14"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="shrink-0"
+          aria-hidden="true"
+        >
+          <rect x="1" y="1" width="4" height="12" rx="1" stroke="currentColor" strokeWidth="1.2" />
+          <rect x="7" y="1" width="6" height="12" rx="1" stroke="currentColor" strokeWidth="1.2" />
+        </svg>
+        Recall what the House showed you
+      </button>
+
       <textarea
         value={narrative}
         onChange={(e) => setNarrative(e.target.value)}
@@ -67,6 +92,83 @@ export default function PostNarrativeStep({ participant, onAdvance }: Props) {
           {submitting ? '...' : 'Hand it over'}
         </button>
       </div>
+
+      {/* Recall drawer */}
+      <>
+        {/* Backdrop */}
+        {isRecallOpen && (
+          <div
+            className="fixed inset-0 bg-black/40 z-40"
+            onClick={() => setIsRecallOpen(false)}
+          />
+        )}
+
+        {/* Drawer */}
+        <div
+          className={`fixed top-0 right-0 h-full w-96 bg-stone-900 border-l border-stone-800 z-50 flex flex-col transition-transform duration-300 ease-in-out ${
+            isRecallOpen ? "translate-x-0" : "translate-x-full"
+          }`}
+        >
+          {/* Header */}
+          <div className="flex items-center justify-between px-5 py-4 border-b border-stone-800 shrink-0">
+            <span className="text-stone-400 text-xs uppercase tracking-widest">
+              The Windows
+            </span>
+            <button
+              onClick={() => setIsRecallOpen(false)}
+              className="text-stone-600 hover:text-stone-400 transition-colors text-lg leading-none"
+              aria-label="Close recall drawer"
+            >
+              ✕
+            </button>
+          </div>
+
+          {/* Tab navigation */}
+          <div className="flex border-b border-stone-800 shrink-0">
+            {passages.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setRecallIndex(i)}
+                className={`flex-1 py-3 text-xs transition-colors ${
+                  recallIndex === i
+                    ? "text-stone-200 border-b-2 border-stone-400 -mb-px"
+                    : "text-stone-600 hover:text-stone-400"
+                }`}
+              >
+                Window {i + 1}
+              </button>
+            ))}
+          </div>
+
+          {/* Scrollable passage content */}
+          <div className="flex-1 overflow-y-auto px-5 py-5">
+            <p className="text-stone-300 text-sm leading-relaxed whitespace-pre-wrap">
+              {passages[recallIndex]}
+            </p>
+          </div>
+
+          {/* Footer navigation */}
+          <div className="flex justify-between items-center px-5 py-4 border-t border-stone-800 shrink-0">
+            <button
+              onClick={() => setRecallIndex((i) => Math.max(0, i - 1))}
+              disabled={recallIndex === 0}
+              className="text-xs text-stone-500 hover:text-stone-300 disabled:opacity-30 transition-colors"
+            >
+              ← Previous
+            </button>
+            <span className="text-stone-700 text-xs">
+              {recallIndex + 1} of {passages.length}
+            </span>
+            <button
+              onClick={() => setRecallIndex((i) => Math.min(passages.length - 1, i + 1))}
+              disabled={recallIndex === passages.length - 1}
+              className="text-xs text-stone-500 hover:text-stone-300 disabled:opacity-30 transition-colors"
+            >
+              Next →
+            </button>
+          </div>
+        </div>
+      </>
     </StepWrapper>
   )
 }

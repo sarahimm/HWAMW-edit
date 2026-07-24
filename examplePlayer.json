@@ -1,0 +1,28 @@
+{ "window":{
+  
+    "description": "The simple, unvarnished pine frame. It smells of cat hair, peat, and cigarettes.",
+    "writer": "Ernest Hemingway",
+    "work": "Hills like White Elephants",
+    "styleInterventions" : ["Use short sentences","Speak plainly","Use lots of dialogue","Don't use dialogue tags (like \"he said\") to show who's speaking, just line breaks between speakers."],
+    "structureInterventions" : ["Reveal the tension subtly and only indirectly through a dialogue between two major characters.",
+                                "A physical journey symbolizes the protagonist's difficult decision",
+                                "The protagonist's mind should be made up by the story's end, but the story only implies what that decision is indirectly."]
+  },
+  "player": {
+    "name": "Jordan Alvarez",
+    "pronouns": "she/her",
+    "woes": ["My career", "My family"],
+    "trouble": "My career",
+    "traits": ["Empathetic", "Organized", "Conflict-avoidant"],
+    "traitsFT": "I tend to put other people's needs first and I have a hard time setting boundaries, but I'm reliable and I try to be thoughtful about how my actions affect others.",
+    "desires": ["Stability", "Creative Fulfillment"],
+    "desiresFT": "All I really want is the free time and mental space to work on creative projects that actually matter to me, and the stability to get myself there.",
+    "baseStory": "Last Tuesday kind of summed things up for me. I started the day the same way I always do: logged in early, cleared my inbox, fixed a small scheduling issue before it became a bigger one. No one was upset, which is usually my goal. By midmorning, I caught myself doodling in the margin of my notebook and then immediately closing it when a meeting popped up.\nWhen I got home that night, Maya was on the couch, half watching something and half scrolling on her phone. She asked how work was, and I said, \"Busy,\" which wasn't a lie. She reminded me—again—that I'd been talking about a new art project for weeks and hadn't touched it. Not in a nagging way, just like she was stating a fact. I ended up sketching for about twenty minutes while she made dinner, and it felt surprisingly good.\nIn the middle of the week, my brother Carlos called. He told me about a coworker of his who'd just gotten promoted and then asked if I'd thought any more about applying for a more \"secure\" role. I said I'd look into it. We changed the subject. That's usually how those conversations go.\nAt work on Friday, Sam Patel and I took an extra-long coffee break. We joked about quitting and joining a circus, like we always do. Then we went back upstairs and finished what we had to finish.\nNothing dramatic happened. That's kind of the point. I'm stable, employed, doing okay. But by the end of the week, I realized I was more excited about those twenty minutes of drawing than anything else I'd done. I don't know what I'll change yet, but I'm starting to pay attention to that feeling instead of brushing it off",
+    "summary": "Jordan goes through a normal, uneventful workday and briefly doodles before getting pulled back into work. At home, her roommate Maya encourages her to work on her art, and Jordan sketches for a short time. Jordan's brother Carlos calls and pushes her toward a more traditional, secure career path. Jordan and her coworker Sam joke during a coffee break about quitting and joining a circus. By the end of the week, Jordan realizes the time spent drawing mattered more to her than anything else she did at work.",
+    "characters": {
+      "Maya Chen": "My roommate and close friend. She's compassionate and clever. She always encourages me to rest and take my art seriously.",
+      "Carlos Alvarez": "My older brother. He takes such good care of his family, but he seems to think everyone wants the life he has, and he keeps pushing me toward more traditional and stable career paths.",
+      "Sam Patel": "My coworker. He's a funny, good-natured guy, but he's stressed about the charity, too."
+    }
+  }
+}

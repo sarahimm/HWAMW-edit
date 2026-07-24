@@ -15,6 +15,7 @@ import MeaningStep from '@/storyComponents/steps/MeaningStep'
 import InHouseStep from '@/storyComponents/steps/InHouseStep'
 import PostNarrativeStep from '@/storyComponents/steps/PostNarrativeStep'
 import CompleteStep from '@/storyComponents/steps/CompleteStep'
+import FirstStep from '@/storyComponents/steps/FirstStep'
 
 export default function StudyPage() {
   const searchParams = useSearchParams()
@@ -49,6 +50,7 @@ export default function StudyPage() {
   const props = { participant, pid, onAdvance: refresh }
 
   switch (participant.status) {
+    case 'first_step':          return <FirstStep {...props} />
     case 'troubles':            return <TroublesStep {...props} />
     case 'qualities':           return <QualitiesStep {...props} />
     case 'quality_description': return <QualityDescriptionStep {...props} />

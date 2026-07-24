@@ -26,7 +26,8 @@ The House with a Million Windows - restorying interface
   - Expand MC options
   - Show scrollable 'window' text when rewriting story
 - Narrative
-  - write intro
+  - ~~title page~~
+  - house page
   - edit text throughout
 - Design
   - Add ascii art
