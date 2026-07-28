@@ -58,13 +58,9 @@ export default function MeaningStep({ participant, timing, onAdvance }: Props) {
       <p className="text-stone-400 text-sm leading-relaxed">
         {timing === 't1' ? (
           <>
-            The gatekeeper nods, like it&apos;s what he expected. &ldquo;And all this
-            stuff you&apos;re going through—is it getting you there?&rdquo; He points to
-            the stone gate post, where dozens of names have been engraved along
-            one vertical line. &ldquo;I keep the most meaningful stories at the
-            top—the real life-changing, tear-jerking, lesson-learned ones. At the
-            bottom are the ones no one can make sense of yet. Where does yours
-            belong?&rdquo;
+            The gatekeeper nods, like it&apos;s what he expected. &ldquo;And all these things you&apos;re going through—are they getting you there?&rdquo;
+            <br/> <br/> He points to the stone gate post, where dozens of names have been engraved along one vertical line. &ldquo;I keep the most meaningful stories at the top—the real life-changing, tear-jerking, lesson-learned ones. At the bottom are the ones no one can make sense of yet. 
+            <br/><br/> &ldquo;Where does yours belong?&rdquo;
           </>
         ) : (
           <>
@@ -77,8 +73,8 @@ export default function MeaningStep({ participant, timing, onAdvance }: Props) {
 
       {/* Visual post scale */}
       <div className="flex flex-col items-center gap-1 py-4">
-        <p className="text-stone-600 text-xs text-center mb-3">
-          A story that changed everything — the kind you&apos;d tell on your deathbed
+        <p className="text-stone-200 text-xs text-center mb-3">
+          A story that changed everything
         </p>
         {POSITIONS.map((pos) => (
           <button
@@ -86,12 +82,12 @@ export default function MeaningStep({ participant, timing, onAdvance }: Props) {
             onClick={() => setScore(pos)}
             className={`w-3 h-3 rounded-full border transition-all ${
               score === pos
-                ? 'bg-stone-300 border-stone-300 scale-150'
+                ? 'bg-stone-300 border-stone-200 scale-150'
                 : 'bg-transparent border-stone-600 hover:border-stone-400'
             }`}
           />
         ))}
-        <p className="text-stone-600 text-xs text-center mt-3">
+        <p className="text-stone-200 text-xs text-center mt-3">
           A story still waiting to make sense
         </p>
       </div>
@@ -99,7 +95,7 @@ export default function MeaningStep({ participant, timing, onAdvance }: Props) {
       {timing === 't1' && (
         <div className="space-y-2">
           <p className="text-stone-400 text-sm">
-            &ldquo;And what name should I carve there?&rdquo;
+            &ldquo;What name shall I carve there?&rdquo;
           </p>
           <input
             type="text"

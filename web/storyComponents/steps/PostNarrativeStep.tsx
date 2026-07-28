@@ -19,6 +19,19 @@ export default function PostNarrativeStep({ participant, onAdvance }: Props) {
   const [isRecallOpen, setIsRecallOpen] = useState(false); 
   const [recallIndex, setRecallIndex] = useState(0);
   const wordCount = narrative.trim().split(/\s+/).filter(Boolean).length
+  const [windowTexts, setWindowTexts] = useState(["","",""])
+  const [passagesLoaded, setPassagesLoaded] = useState(false)
+
+
+  const handleRecall = async () => {
+    if(!passagesLoaded){
+      const response = await fetch(`/llmFuncs/window-sessions/completed?participantId=${participant.id}&type=passages`)
+      const data = await response.json()
+      setWindowTexts(data.passages)
+      setPassagesLoaded(true)
+    }
+    setIsRecallOpen(true);
+  }
 
   const handleSubmit = async () => {
     if (!narrative.trim() || wordCount > 350) return
@@ -27,9 +40,6 @@ export default function PostNarrativeStep({ participant, onAdvance }: Props) {
     await updateParticipantStatus(participant.pid, nextStep('post_narrative'))
     onAdvance()
   }
-  
-  const passages: string[] = ["","",""];
-
 
   return (
     <StepWrapper>
@@ -48,15 +58,13 @@ export default function PostNarrativeStep({ participant, onAdvance }: Props) {
       </p>
 
       <p className="text-stone-500 text-xs leading-relaxed">
-        Tell your story again — up to 300 words. You may draw on anything you saw
-        through the windows, but the words are entirely yours.
+        Tell your story again — up to 450 words. You may draw on anything you saw through the windows, but the final story should be your own.
       </p>
 
       <button
-        onClick={() => setIsRecallOpen(true)}
+        onClick={() => handleRecall()}
         className="flex items-center gap-2 px-3 py-2 text-xs rounded border border-stone-800 text-stone-500 hover:border-stone-700 hover:text-stone-400 transition-colors self-start"
       >
-        {/* Column/panel icon */}
         <svg
           width="14"
           height="14"
@@ -81,8 +89,8 @@ export default function PostNarrativeStep({ participant, onAdvance }: Props) {
       />
 
       <div className="flex justify-between items-center">
-        <span className={`text-xs ${wordCount > 300 ? 'text-amber-600' : 'text-stone-600'}`}>
-          {wordCount} / 300 words
+        <span className={`text-xs ${wordCount > 450 ? 'text-amber-600' : 'text-stone-600'}`}>
+          {wordCount} / 450 words
         </span>
         <button
           onClick={handleSubmit}
@@ -95,7 +103,6 @@ export default function PostNarrativeStep({ participant, onAdvance }: Props) {
 
       {/* Recall drawer */}
       <>
-        {/* Backdrop */}
         {isRecallOpen && (
           <div
             className="fixed inset-0 bg-black/40 z-40"
@@ -103,13 +110,11 @@ export default function PostNarrativeStep({ participant, onAdvance }: Props) {
           />
         )}
 
-        {/* Drawer */}
         <div
-          className={`fixed top-0 right-0 h-full w-96 bg-stone-900 border-l border-stone-800 z-50 flex flex-col transition-transform duration-300 ease-in-out ${
+          className={`fixed top-0 right-0 h-full w-120 bg-stone-900 border-l border-stone-800 z-50 flex flex-col transition-transform duration-300 ease-in-out ${
             isRecallOpen ? "translate-x-0" : "translate-x-full"
           }`}
         >
-          {/* Header */}
           <div className="flex items-center justify-between px-5 py-4 border-b border-stone-800 shrink-0">
             <span className="text-stone-400 text-xs uppercase tracking-widest">
               The Windows
@@ -123,9 +128,8 @@ export default function PostNarrativeStep({ participant, onAdvance }: Props) {
             </button>
           </div>
 
-          {/* Tab navigation */}
           <div className="flex border-b border-stone-800 shrink-0">
-            {passages.map((_, i) => (
+            {windowTexts.map((_, i) => (
               <button
                 key={i}
                 onClick={() => setRecallIndex(i)}
@@ -140,10 +144,9 @@ export default function PostNarrativeStep({ participant, onAdvance }: Props) {
             ))}
           </div>
 
-          {/* Scrollable passage content */}
           <div className="flex-1 overflow-y-auto px-5 py-5">
-            <p className="text-stone-300 text-sm leading-relaxed whitespace-pre-wrap">
-              {passages[recallIndex]}
+            <p className="text-stone-300 text-xs leading-relaxed whitespace-pre-wrap">
+              {windowTexts[recallIndex]}
             </p>
           </div>
 
@@ -157,11 +160,11 @@ export default function PostNarrativeStep({ participant, onAdvance }: Props) {
               ← Previous
             </button>
             <span className="text-stone-700 text-xs">
-              {recallIndex + 1} of {passages.length}
+              {recallIndex + 1} of {windowTexts.length}
             </span>
             <button
-              onClick={() => setRecallIndex((i) => Math.min(passages.length - 1, i + 1))}
-              disabled={recallIndex === passages.length - 1}
+              onClick={() => setRecallIndex((i) => Math.min(windowTexts.length - 1, i + 1))}
+              disabled={recallIndex === windowTexts.length - 1}
               className="text-xs text-stone-500 hover:text-stone-300 disabled:opacity-30 transition-colors"
             >
               Next →

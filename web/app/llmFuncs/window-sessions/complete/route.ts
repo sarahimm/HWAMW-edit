@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server'
 
 export async function POST(req: Request) {
   try {
-    const { participantId, windowName, passages } = await req.json()
+    const { participantId, windowId, passages } = await req.json()
 
     const result = db
       .prepare(
@@ -20,7 +20,7 @@ export async function POST(req: Request) {
         JSON.stringify(passages),   // TEXT column — JSON
         new Date().toISOString(),
         participantId,
-        windowName
+        windowId
       )
 
     if (result.changes === 0) {

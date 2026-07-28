@@ -49,7 +49,7 @@ export default function InHouseStep({ participant, onAdvance }: Props) {
   }, []);
 
   useEffect(() => {
-    fetch(`/llmFuncs/window-sessions/completed?participantId=${participant.id}`)
+    fetch(`/llmFuncs/window-sessions/completed?participantId=${participant.id}&type=windows`)
       .then((res) => res.json())
       .then((data) => {
         if (data.windows) setCompletedWindows(data.windows)
@@ -69,7 +69,7 @@ export default function InHouseStep({ participant, onAdvance }: Props) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         participantId: participant.id,
-        windowId,
+        windowId: windowId,
         orderInSession: completedWindows.length + 1,
       }),
     })
