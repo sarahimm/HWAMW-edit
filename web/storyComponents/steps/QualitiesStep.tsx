@@ -6,15 +6,6 @@ import { nextStep } from '@/lib/steps'
 import { Participant } from '@/types/database'
 import StepWrapper from '@/storyComponents/StepWrapper'
 
-const QUALITIES = [
-  'Smart',
-  'Good looking',
-  'Charismatic',
-  'Creative',
-  'Loyal',
-  'Indecisive — give me more options',
-]
-
 interface Props {
   participant: Participant
   pid: string
@@ -22,23 +13,24 @@ interface Props {
 }
 
 export default function QualitiesStep({ participant, onAdvance }: Props) {
-  const [selected, setSelected] = useState<string[]>([])
+  const [values, setValues] = useState<[string, string, string]>(['', '', ''])
   const [submitting, setSubmitting] = useState(false)
-
-  const toggle = (item: string) => {
-    setSelected((prev) =>
-      prev.includes(item)
-        ? prev.filter((x) => x !== item)
-        : prev.length < 3
-        ? [...prev, item]
-        : prev
-    )
+  const placeholders = ["Quality 1", "Quality 2", "Quality 3"]
+  const setField = (index: number, text: string) => {
+    setValues((prev) => {
+      const next: [string, string, string] = [...prev] as [string, string, string]
+      next[index] = text
+      return next
+    })
   }
 
+  const qualities = values.map((v) => v.trim()).filter((v) => v.length > 0)
+  const canSubmit = qualities.length > 0
+
   const handleSubmit = async () => {
-    if (selected.length === 0) return
+    if (!canSubmit) return
     setSubmitting(true)
-    await updateSession(participant.id, { qualities: selected })
+    await updateSession(participant.id, { qualities })
     await updateParticipantStatus(participant.pid, nextStep('qualities'))
     onAdvance()
   }
@@ -47,8 +39,7 @@ export default function QualitiesStep({ participant, onAdvance }: Props) {
     <StepWrapper>
       <p className="text-stone-200 text-sm leading-relaxed">
         The trail turns, growing as convoluted as your thoughts. With a sigh,
-        you make your way back up to the hardened dirt path. You&apos;re allowed to
-        be here, probably.
+        you make your way back up to the hardened dirt path. You&apos;re allowed to be here, probably.
       </p>
       <p className="text-stone-200 text-sm leading-relaxed">
         Sure, there was that sign at the head of the path that said &ldquo;No
@@ -57,30 +48,30 @@ export default function QualitiesStep({ participant, onAdvance }: Props) {
       </p>
 
       <div className="space-y-2">
-        {QUALITIES.map((quality) => (
-          <button
-            key={quality}
-            onClick={() => toggle(quality)}
-            className={`w-full text-left px-4 py-3 rounded border text-sm transition-colors ${
-              selected.includes(quality)
-                ? 'border-stone-500 bg-stone-800 text-stone-200'
-                : 'border-stone-800 text-stone-200 hover:border-stone-600'
-            }`}
-          >
-            {quality}
-          </button>
+        <p className="text-sm text-stone-500 italic">How would you describe yourself? Think of qualities like creative, ambitious, loyal, eccentric, stubborn, introspective, bubbly, or shy. </p>
+        {values.map((value, index) => (
+          <input
+            key={index}
+            autoFocus={index === 0}
+            type="text"
+            value={value}
+            onChange={(e) => setField(index, e.target.value)}
+            placeholder={placeholders[index]}
+            maxLength={40}
+            className="w-full px-4 py-3 rounded border border-stone-600 bg-stone-900 text-stone-200 text-sm placeholder:text-stone-500 focus:outline-none focus:border-stone-500 placeholder:italic transition-colors"
+          />
         ))}
       </div>
 
-      <p className="text-stone-600 text-xs">Choose 1–3.</p>
+      <p className="text-stone-600 text-xs">Fill in 1–3.</p>
 
       <p className="text-stone-200 text-sm leading-relaxed">
-        …but a trespasser isn&apos;t one of them.
+        …but you're not a trespasser.
       </p>
 
       <button
         onClick={handleSubmit}
-        disabled={selected.length === 0 || submitting}
+        disabled={!canSubmit || submitting}
         className="w-full py-3 text-sm font-medium rounded border border-stone-700 text-stone-300 hover:bg-stone-800 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
       >
         {submitting ? '...' : 'Continue'}

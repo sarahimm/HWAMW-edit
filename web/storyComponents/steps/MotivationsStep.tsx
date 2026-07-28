@@ -8,10 +8,11 @@ import StepWrapper from '@/storyComponents/StepWrapper'
 
 const MOTIVATIONS = [
   'To lead a stable, happy life',
+  'To make a difference in the world',
+  'To find love',
   'To achieve my full potential',
-  'To find someone who loves me',
-  'To have a better relationship with my family',
-  'To make enough money to live the life I want',
+  'To support my family, friends, or community',
+  'To live in the moment',
   'To be rich, powerful, or famous—ideally all three',
   "Something you'd never find on a list",
 ]
@@ -32,7 +33,7 @@ export default function MotivationsStep({ participant, onAdvance }: Props) {
     setSelected((prev) =>
       prev.includes(item)
         ? prev.filter((x) => x !== item)
-        : prev.length < 3
+        : prev.length < 4
         ? [...prev, item]
         : prev
     )
@@ -55,7 +56,7 @@ export default function MotivationsStep({ participant, onAdvance }: Props) {
     return (
       <StepWrapper>
         <p className="text-stone-400 text-sm leading-relaxed">
-          &ldquo;Well, maybe it&apos;s not quite that simple… There&apos;s a bit more to it?&rdquo;
+          Well, maybe it&apos;s not quite that simple… There&apos;s a bit more to it:
         </p>
         <textarea
           value={elaboration}
@@ -83,7 +84,7 @@ export default function MotivationsStep({ participant, onAdvance }: Props) {
       </p>
       <p className="text-stone-400 text-sm leading-relaxed">
         A night of sleep and an end to this conversation, mostly. But you put on a
-        polite smile and give a more genuine answer.
+        polite smile and give a more genuine answer. Really, all you want is:
       </p>
 
       <div className="space-y-2">

@@ -13,6 +13,8 @@ const TROUBLES = [
   'My career',
   'My creative pursuits',
   'My community',
+  'My identity',
+  'The state of the world',
   "You wouldn't understand",
 ]
 
@@ -46,12 +48,16 @@ export default function TroublesStep({ participant, onAdvance }: Props) {
 
   return (
     <StepWrapper>
+      <h1>Part I: The Approach</h1>
       <p className="text-stone-200 text-sm leading-relaxed">
         {/*<Typewriter text="You're out walking late tonight. Much later than you usually stay up. It's been a long day. For that matter, a long year." delay={50} infinite={false} />  */}
         You're out walking late tonight. Much later than you usually stay up. It's been a long day. For that matter, a long year.
       </p>
       <p className="text-stone-200 text-sm leading-relaxed">
-        There's a tiredness deep in your bones, but not the kind that stillness can solve. Something inside of you feels stuck. You're exhausted, but you keep walking, as though your feet moving on might make your thoughts follow after.
+        There's a tiredness deep in your bones, but not the kind that stillness can solve. Something inside of you feels stuck.
+      </p>
+      <p className="text-stone-200 text-sm leading-relaxed">
+        You're exhausted, but you keep walking, as though your feet moving on might make your thoughts follow after.
       </p>
 
       <p className="text-stone-200 text-sm leading-relaxed">

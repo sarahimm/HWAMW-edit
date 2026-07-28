@@ -36,12 +36,12 @@ export default function QualityDescriptionStep({ participant, onAdvance }: Props
     onAdvance()
   }
 
-  const qualityList = qualities.filter(q => !q.includes('more options')).join(' and ')
+  const qualityList = qualities.join(', and ')
 
   return (
     <StepWrapper>
       <p className="text-stone-200 text-sm leading-relaxed">
-        You stroll down this smoother path, humming a little.{' '}
+        Heedless, you stroll down this smoother path, humming a little.{' '}
         {qualityList ? (
           <span className="text-stone-100">{qualityList}…</span>
         ) : (
@@ -50,14 +50,13 @@ export default function QualityDescriptionStep({ participant, onAdvance }: Props
         That about sums it up.
       </p>
       <p className="text-stone-200 text-sm leading-relaxed">
-        Other people might see it differently. But at least that&apos;s how you
-        experience it. If you had to be more specific, you might say:
+        Other people might see things differently. But at least that&apos;s how you experience it. If you had to be more specific, you might say:
       </p>
 
       <textarea
         value={description}
         onChange={(e) => setDescription(e.target.value)}
-        placeholder="In your own words…"
+        placeholder="Describe yourself in a couple sentences…"
         rows={4}
         className="w-full bg-stone-900 border border-stone-700 rounded px-4 py-3 text-stone-200 text-sm placeholder-stone-600 focus:outline-none focus:border-stone-500 resize-none leading-relaxed"
       />

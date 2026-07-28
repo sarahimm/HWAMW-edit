@@ -84,7 +84,7 @@ export default function CharactersStep({ participant, onAdvance }: Props) {
     return (
       <StepWrapper>
         <p className="text-stone-400 text-sm leading-relaxed">
-          He takes out a small piece of parchment and begins to scribble.{' '}
+          He listens to your story eagerly, then rubs a hand against his chin, pausing to consider.{' '}
           <LoadingDots />
         </p>
       </StepWrapper>
@@ -95,7 +95,7 @@ export default function CharactersStep({ participant, onAdvance }: Props) {
     return (
       <StepWrapper>
         <p className="text-stone-400 text-sm leading-relaxed">
-          &ldquo;Now let me see if I&apos;ve got this straight.&rdquo; He hands you the parchment.
+          &ldquo;Now let me see if I&apos;ve got this straight.&rdquo;
         </p>
         <p className="text-stone-200 text-sm leading-relaxed">{plotSummary}</p>
         <p className="text-stone-400 text-sm">&ldquo;Is that right?&rdquo;</p>
@@ -147,7 +147,7 @@ export default function CharactersStep({ participant, onAdvance }: Props) {
       <textarea
         value={charDescription}
         onChange={(e) => setCharDescription(e.target.value)}
-        placeholder={`Say a little about ${currentChar.name}…`}
+        placeholder={`Describe ${currentChar.name} in 1-3 sentences…`}
         rows={3}
         className="w-full bg-stone-900 border border-stone-700 rounded px-4 py-3 text-stone-200 text-sm placeholder-stone-600 focus:outline-none focus:border-stone-500 resize-none leading-relaxed"
       />
