@@ -58,9 +58,12 @@ export default function MeaningStep({ participant, timing, onAdvance }: Props) {
       <p className="text-stone-400 text-sm leading-relaxed">
         {timing === 't1' ? (
           <>
-            The gatekeeper nods, like it&apos;s what he expected. &ldquo;And all these things you&apos;re going through—are they getting you there?&rdquo;
-            <br/> <br/> He points to the stone gate post, where dozens of names have been engraved along one vertical line. &ldquo;I keep the most meaningful stories at the top—the real life-changing, tear-jerking, lesson-learned ones. At the bottom are the ones no one can make sense of yet. 
-            <br/><br/> &ldquo;Where does yours belong?&rdquo;
+          <p>
+            The gatekeeper nods, like it&apos;s what he expected.</p> <br></br>
+            <p> &ldquo;And all these things you&apos;re going through—are they getting you there?&rdquo; He clears his throat. "I only ask because I make a mark for each story I'm told. A guest book, sort of."</p><br></br>
+            <p> He points to the stone gate post, where dozens of names have been engraved along one vertical line. &ldquo;I keep the most meaningful stories at the top—the real life-changing, tear-jerking, lesson-learned ones. At the bottom are the ones no one can make sense of yet. 
+            </p><br></br>
+            <p className="weight-bold"> &ldquo;Where does yours belong?&rdquo;</p>
           </>
         ) : (
           <>
@@ -95,7 +98,7 @@ export default function MeaningStep({ participant, timing, onAdvance }: Props) {
       {timing === 't1' && (
         <div className="space-y-2">
           <p className="text-stone-400 text-sm">
-            &ldquo;What name shall I carve there?&rdquo;
+            "Alright, then," he says, unreadable. "And finally--rude of me to wait this long to ask, really--what name shall I carve there?"
           </p>
           <input
             type="text"
@@ -134,6 +137,7 @@ export default function MeaningStep({ participant, timing, onAdvance }: Props) {
               className="w-full bg-stone-900 border border-stone-700 rounded px-4 py-3 text-stone-200 text-sm placeholder-stone-600 focus:outline-none focus:border-stone-500"
             />
           )}
+        <p>"Pleasure to meet you. Step right inside."</p>
         </div>
       )}
 
