@@ -45,7 +45,7 @@ export async function getOrCreateParticipant(pid: string): Promise<Participant> 
   }
 
 
-  const assignedWindows = pickRandom(windowIds, 3)
+  const assignedWindows = pickRandom(windowIds, 5)
 
   const created = db
     .prepare(

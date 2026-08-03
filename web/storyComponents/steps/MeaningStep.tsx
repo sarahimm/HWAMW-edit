@@ -55,7 +55,7 @@ export default function MeaningStep({ participant, timing, onAdvance }: Props) {
 
   return (
     <StepWrapper>
-      <p className="text-stone-400 text-sm leading-relaxed">
+      <div className="text-stone-400 text-sm leading-relaxed">
         {timing === 't1' ? (
           <>
           <p>
@@ -66,13 +66,11 @@ export default function MeaningStep({ participant, timing, onAdvance }: Props) {
             <p className="weight-bold"> &ldquo;Where does yours belong?&rdquo;</p>
           </>
         ) : (
-          <>
-            &ldquo;Ah!&rdquo; the gatekeeper says. &ldquo;You&apos;re just in time. Shall we? Though—
-            things always look different in the morning around here. Has the story
-            changed?&rdquo; He picks up the rotary tool. &ldquo;Where does it belong now?&rdquo;
-          </>
+          <p>
+            "I see." He scratches his chin thoughtfully. "And where would you say it belongs now?"
+          </p>
         )}
-      </p>
+      </div>
 
       {/* Visual post scale */}
       <div className="flex flex-col items-center gap-1 py-4">

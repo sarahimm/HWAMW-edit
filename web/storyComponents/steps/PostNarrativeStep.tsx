@@ -43,22 +43,16 @@ export default function PostNarrativeStep({ participant, onAdvance }: Props) {
 
   return (
     <StepWrapper>
-      <p className="text-stone-400 text-sm leading-relaxed">
-        &ldquo;Ah!&rdquo; the gatekeeper says. &ldquo;You&apos;re just in time. I&apos;ve been thinking
-        about your story all night, and just where to put it. Shall we?&rdquo;
-      </p>
-      <p className="text-stone-200 text-sm leading-relaxed">
-        He&apos;s ready to go, standing beside the gate with a rotary tool in hand.
-        But on seeing your wide-eyed look, he pauses. &ldquo;Unless… the story&apos;s
-        changed, hasn&apos;t it?&rdquo;
-      </p>
-      <p className="text-stone-200 text-sm leading-relaxed">
-        You nod. &ldquo;Thought so,&rdquo; he says. &ldquo;Things always look different in the
-        morning around here. Go on, then.&rdquo;
-      </p>
+      <div className="py-3">
+          <p className="my-3 text-stone-200 leading-relaxed text-sm">When you finally pull yourself from the uncanny grip of these stories which aren't quite yours, it's early dawn. Not that you can tell from the ever-present glow of the windows, none of which actually depict the outdoors, as far as you can tell. But you hear birdsong and make your way to the door.</p>
+          <p className="my-3 text-stone-200 leading-relaxed text-sm"> Outside, the Gatekeeper is already awake. "Ah!" he says. "You're just in time. I've been thinking about your story all night, and I know just where to put it. Shall we?"</p>
+          <p className="my-3 text-stone-200 leading-relaxed text-sm">He's ready to begin, standing beside the gate with a rotary tool in hand. But on seeing your baffled, wide-eyed look, he pauses. "Unless...the story's changed, hasn't it?"</p>
+          <p className="my-3 text-stone-200 leading-relaxed text-sm">You nod.</p>
+          <p className="my-3 text-stone-200 leading-relaxed text-sm">Thought so. Things always look different in the morning around here. Go on, then. Let's hear it."</p>
+      </div>
 
       <p className="text-stone-500 text-xs leading-relaxed">
-        Tell your story again — up to 450 words. You may draw on anything you saw through the windows, but the final story should be your own.
+        Tell your story again — up to 500 words. You may draw on anything you saw through the windows, but the final story should be your own.
       </p>
 
       <button
@@ -89,8 +83,8 @@ export default function PostNarrativeStep({ participant, onAdvance }: Props) {
       />
 
       <div className="flex justify-between items-center">
-        <span className={`text-xs ${wordCount > 450 ? 'text-amber-600' : 'text-stone-600'}`}>
-          {wordCount} / 450 words
+        <span className={`text-xs ${wordCount > 500 ? 'text-amber-600' : 'text-stone-600'}`}>
+          {wordCount} / 500 words
         </span>
         <button
           onClick={handleSubmit}

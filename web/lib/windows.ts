@@ -74,7 +74,7 @@ export function buildSystemPrompt(config: WindowConfig, session: Session): strin
         structurePrompt += "- " + config.structureInterventions[i]
     }
   return `Write a story based on the character and events given to you in the style of  ${config.writer}'s ${config.work}. Adhere to the following rules:\n` + stylePrompt +   "\n\n" + structurePrompt + "\n\n" +
-  "The story should be fully aligned with the factual information in the summary, but it should feel very different, entirely reframed according to the instructions above. \n\n **Events**" +
+  "The story should be aligned with the factual information in the summary, but it should feel very different, entirely reframed according to the instructions above. Do NOT merely summarize or write abstractly; use each 150-word section to narrate scenes and advance the plot in the described style. \n\n **Events**" +
   `${session.plot_summary},
   **Protagonist**
   Name: ${session.participant_name} (${session.participant_pronouns})

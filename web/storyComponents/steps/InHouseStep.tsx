@@ -14,12 +14,12 @@ interface Props {
   onAdvance: () => void
 }
 
-type WindowPhase = 'choosing' | 'reading' | 'done'
+type WindowPhase = 'approaching' | 'choosing' | 'reading' | 'done'
 
 export default function InHouseStep({ participant, onAdvance }: Props) {
   const [completedWindows, setCompletedWindows] = useState<string[]>([])
   const [currentWindow, setCurrentWindow] = useState<string | null>(null)
-  const [phase, setPhase] = useState<WindowPhase>('choosing')
+  const [phase, setPhase] = useState<WindowPhase>('approaching')
   const [passages, setPassages] = useState<LLMPassage[]>([])
   const [currentSection, setCurrentSection] = useState(0)
   const [feedback, setFeedback] = useState('')
@@ -30,7 +30,7 @@ export default function InHouseStep({ participant, onAdvance }: Props) {
   const remainingWindows = participant.assigned_windows.filter(
     (w) => !completedWindows.includes(w)
   )
-
+  
   const [windowConfigs, setWindowConfigs] = useState<Record<string, WindowConfig>>({});
 
   useEffect(() => {
@@ -89,6 +89,10 @@ export default function InHouseStep({ participant, onAdvance }: Props) {
     setGenerating(false)
   }
 
+  const handleApproach = () => {
+    setPhase('choosing')
+  }
+
   const handleGoOn = () => {
     if (currentSection < passages.length - 1) {
       setCurrentSection(currentSection + 1)
@@ -144,25 +148,47 @@ export default function InHouseStep({ participant, onAdvance }: Props) {
     setCurrentWindow(null)
     setPhase('choosing')
 
-    if (newCompleted.length >= participant.assigned_windows.length) {
+    if (newCompleted.length >= 3) {
       await updateParticipantStatus(participant.pid, nextStep('in_house'))
       onAdvance()
     }
   }
 
   // Choosing a window
+  if (phase === 'approaching'){
+    return (
+      <StepWrapper>
+        <p className="text-stone-200 text-sm leading-relaxed">
+          The door opens lightly at your touch. <em>Good,</em> you think, eager to get to bed and put this strange night behind you. But as you step inside, your eyes adjusting to the unlit space, all thoughts of sleep disappear.
+        </p>
+        <p className="text-stone-200 text-sm leading-relaxed">
+          The room is elegantly but sparsely furnished. There's a scattering of plush benches and stools set in the center of the long hall, facing out, almost as if you were walking through an art gallery. But there are no artworks on the walls--only windows, stretching as far as your tired eyes can see. They warp the evening light strangely, creating a mosaic of coloured rectangles on the floor.
+        </p>
+        <p className="text-stone-200 text-sm leading-relaxed">
+          You climb a twisting stair up to the wraparound gallery, your footsteps on the wrought metal steps making no sound at all. There is another level above it. Dreamlike, in a fugue state, you climb, and find that each floor is the same. Window after window, streaming with soft light in colors that have nothing to do with the fading sun outside. 
+        </p>
+        <p className="text-stone-200 text-sm leading-relaxed">
+          When you reach the next landing, you turn off from the stair and step toward the windows for a closer look. Here, you can see what you were too dazed to believe at a distance: of all the windows you've passed, no two are alike. The frames, dressings, and even the intensity of the light seeping through the glass all clash from one to the next, as if they not only belonged in different houses but perhaps opened onto different worlds entirely.
+        </p>
+        <div className="w-full flex items-center justify-center">
+          <button onClick={handleApproach} className="px-3 py-3 text-sm rounded border border-stone-700 text-stone-300 hover:bg-stone-800 transition-colors">
+            Approach the windows
+          </button>
+        </div>
+      </StepWrapper>
+    )
+  }
   if (phase === 'choosing') {
     return (
       <StepWrapper>
         <p className="text-stone-200 text-sm leading-relaxed">
-          Before you are {remainingWindows.length === participant.assigned_windows.length
-            ? 'three window frames'
-            : `${remainingWindows.length} remaining window${remainingWindows.length !== 1 ? 's' : ''}`}.
+          You consider the three {completedWindows.length > 0
+            ? 'remaining' : ''} window frames nearest you.
           Do you walk toward…
         </p>
 
         <div className="space-y-3">
-          {remainingWindows.map((w) => {
+          {remainingWindows.slice(0,3).map((w) => {
             const window = windowConfigs[w];
             let desc = "";
             if (window) {
@@ -183,7 +209,7 @@ export default function InHouseStep({ participant, onAdvance }: Props) {
 
         {completedWindows.length > 0 && (
           <p className="text-stone-600 text-xs text-center">
-            {completedWindows.length} of {participant.assigned_windows.length} windows visited
+            {completedWindows.length} of 3 windows visited
           </p>
         )}
       </StepWrapper>
@@ -205,7 +231,9 @@ export default function InHouseStep({ participant, onAdvance }: Props) {
           <p className="text-stone-600 text-xs uppercase tracking-widest">
             Through the window — {currentSection + 1} of 3
           </p>
-
+          <p className="text-stone-400 leading-relaxed">
+            As you peer through the glass, an almost-familiar scene plays out before your eyes.
+          </p>
           <div className="prose prose-sm prose-invert max-w-none">
             <p className="text-stone-200 leading-relaxed whitespace-pre-wrap">
               {currentPassage.content}

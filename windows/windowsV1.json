@@ -7,7 +7,7 @@
       "Use short sentences.",
       "Speak plainly.",
       "Use lots of dialogue.",
-      "Don't use dialogue tags (like \"he said\") to show who's speaking, just line breaks between speakers."
+      "Don't use dialogue tags (like \"he said\") to show who's speaking if the context makes it obvious."
     ],
     "structureInterventions": [
       "Reveal the tension subtly and only indirectly through a dialogue between two major characters.",
@@ -38,7 +38,7 @@
       "Use a strong first-person narrative voice, with lots of interiority.",
       "Use poetic, formal, and even archaic language.",
       "The tone should be dark, dwelling on Gothic imagery and themes.",
-      "The narration should be unreliable, feeling logical, justified, and clinical on the surface but spiraling or growing more emotional or even deceptive throughout the piece."
+      "Use an unreliable narrator who feels logical, justified, and clinical on the surface but spirals, growing more emotional or uncertain throughout the piece."
     ],
     "structureInterventions": [
       "The protagonist, looking back, narrates their story in retrospect, explaining or justifying their decisions.",
@@ -53,7 +53,7 @@
     "styleInterventions": [
       "Use witty, elevated diction with Regency flavor.",
       "Write in third person, but use free indirect discourse to flavor the narration with characters' tones and opinions.",
-      "Utilize frequent verbal irony to tastefully critique other characters, situations, and wider society."
+      "Use lots of verbal irony to tastefully critique other characters, situations, and wider society."
     ],
     "structureInterventions": [
       "The protagonist begins in an unfortunate or underprivileged situation that gets much worse throughout the story before being resolved.",
@@ -66,14 +66,13 @@
     "writer": "Langston Hughes",
     "work": "Salvation",
     "styleInterventions": [
-      "Keep a conversational tone.",
-      "Use lots of verbal irony.",
-      "Incorporate the voices of minor characters, using strong and distinct personas which reflect their social role and background.",
-      "Write in first person, past tense, but use quick-moving, in-the-moment description."
+      "Keep a conversational tone, with lots of verbal irony",
+      "Draw on imagery associated with belief and disillusionment, like light and music. Emphasize moments of hopefulness, guilt, compassion, and sorrow.",
+      "Use polyphony: incorporate the voices of minor characters as strong and distinct personas whose comments reflect their social role and background."
     ],
     "structureInterventions": [
       "Emphasize social and cultural commentary.",
-      "The plot should be linear but include lots of references to things others said or did previously.",
+      "Present the story in retrospect: a first-person narrator looking back and reflecting on events in past tense, but with close moment-by-moment attention to detail.",
       "The narrator should directly show the reader the internal conflicts that other characters can't see."
     ]
   }
