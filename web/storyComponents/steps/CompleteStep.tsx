@@ -23,7 +23,7 @@ export default function CompleteStep({ participant }: Props) {
   return (
     <StepWrapper>
       <p className="text-stone-200 text-sm leading-relaxed">
-        "There," the gatekeeper says, and steps back to admire his work. Your name is carved into the stone in the place you chose, alongside dozens of others. So many travellers. You wonder what their stories had been.
+        "There," the gatekeeper says, and steps back to admire his work. Your name is carved into the stone in the place you chose, alongside dozens of others.
       </p>
       <p className="text-stone-200 text-sm leading-relaxed">
         The sky is beginning to lighten at the edges. The house behind you is quiet, windows glowing warmly. You have the feeling, not unpleasant, of someone who has stayed up much later than they intended and gotten more than they bargained for.
