@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { getOrCreateParticipant, ensureSession } from '@/lib/session'
 import { Participant } from '@/types/database'
@@ -17,7 +17,7 @@ import PostNarrativeStep from '@/storyComponents/steps/PostNarrativeStep'
 import CompleteStep from '@/storyComponents/steps/CompleteStep'
 import FirstStep from '@/storyComponents/steps/FirstStep'
 
-export default function StudyPage() {
+const StudyPage = () => {
   const searchParams = useSearchParams()
   const pid = searchParams.get('pid')
 
@@ -65,6 +65,16 @@ export default function StudyPage() {
     default:                    return <ErrorScreen message="Unknown step. Please contact the research team." />
   }
 }
+
+const Page = () => {
+  return (
+    <Suspense>
+      <StudyPage/>
+    </Suspense>
+  )
+}
+
+export default Page
 
 function LoadingScreen() {
   return (
