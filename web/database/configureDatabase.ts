@@ -10,10 +10,10 @@ function resolveDbPath() {
     // Use as-is if absolute; otherwise resolve against cwd
     return path.isAbsolute(configured)
       ? configured
-      : path.join(process.cwd(), configured)
+      : path.join(/*turbopackIgnore: true*/process.cwd(), configured)
   }
   // Default: a folder in the user's home dir, outside the project
-  return path.join(os.homedir(), '.study-data', 'study.db')
+  return '/var/www/html/HWAMW-edit/study.db'
 }
 
 function createDb() {

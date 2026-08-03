@@ -1,6 +1,6 @@
 'use server'
 
-import { db } from '../database/configureDatabase'
+import { db } from '@/database/configureDatabase'
 import { Participant, ParticipantStatus, Session } from '@/types/database'
 
 const rows: any[] = db.prepare('SELECT id FROM windows').all();
